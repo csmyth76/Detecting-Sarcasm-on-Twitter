@@ -349,7 +349,15 @@ contraction_dict = {
   "you'll": "you you will",
   "you'll've": "you you will have",
   "you're": "you are",
-  "you've": "you have"
+  "you've": "you have",
+  "the us": "the united states"
+}
+
+acronym_dict = {
+    "the us": "the united states",
+    " f ": "frick",
+    " fu ": "frick you",
+    " u ": "you"
 }
 
 
@@ -447,7 +455,7 @@ tweet: tweet string of text
 Return: same input string without punctuation, numbers and special characters
 '''
 def clean_tweet(tweet): 
-    return ' '.join(re.sub("([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split()) 
+    return ' '.join(re.sub("([^A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split()) 
 
 
 def lemmatize_list(text_list):
@@ -659,7 +667,7 @@ def sarc_vs_non_graph_limit(compare_data_name,
     if upper_limit:
         s_v_n_l_ds = s_v_n_l_ds[s_v_n_l_ds[compare_data_name] < upper_limit].reset_index(drop=True)
         
-    du.sarc_vs_non_graph(compare_data_name, 
+    sarc_vs_non_graph(compare_data_name, 
                             s_v_n_l_ds[compare_data_name], 
                             s_v_n_l_ds['Sarcasm'])
 
@@ -804,11 +812,16 @@ def counts_to_graph(count_item_name, count_data):
         data=graph_data,kind='count')
     
 
-def counts_to_graph_filter(none_below, count_item_name, count_data):
+def counts_to_graph_filter_low(none_below, count_item_name, count_data):
     filtered_usage_count = [c for c in count_data if c > none_below]
     counts_to_graph(count_item_name, filtered_usage_count)
+
+
+def counts_to_graph_filter_high(none_above, count_item_name, count_data):
+    filtered_usage_count = [c for c in count_data if c < none_above]
+    counts_to_graph(count_item_name, filtered_usage_count)
     
-    
+
 def get_tweets_based_on_count(count_to_get, tweets_list, count_list):
     count_df = pd.DataFrame()
     count_df['text'] = tweets_list
