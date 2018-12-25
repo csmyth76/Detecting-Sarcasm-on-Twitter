@@ -1,4 +1,4 @@
-# Detecting Sarcasm in Twitter
+# Detecting Sarcasm on Twitter
 
 Project File: semanticRel.ipynb
 
